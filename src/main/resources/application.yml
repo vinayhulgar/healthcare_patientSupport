@@ -1,0 +1,74 @@
+spring:
+  application:
+    name: healthcare-care-navigator
+
+  # ── Spring AI ──────────────────────────────────────────────────────────────
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY:placeholder}
+      chat:
+        options:
+          model: gpt-4o
+      embedding:
+        options:
+          model: text-embedding-ada-002
+    vectorstore:
+      pgvector:
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: 1536
+
+  # ── Datasource / JPA ────────────────────────────────────────────────────────
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/healthcare_navigator}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+  # ── Security — OAuth2 JWT Resource Server ───────────────────────────────────
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${JWK_SET_URI:https://placeholder.auth.example.com/.well-known/jwks.json}
+          issuer-uri: ${JWT_ISSUER_URI:https://placeholder.auth.example.com/}
+
+# ── RAG configuration ─────────────────────────────────────────────────────────
+rag:
+  top-k: 5
+  similarity-threshold: 0.7
+
+# ── Resilience4j circuit breakers ─────────────────────────────────────────────
+resilience4j:
+  circuitbreaker:
+    instances:
+      clinical-information-agent:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
+        permittedNumberOfCallsInHalfOpenState: 3
+      medication-agent:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
+        permittedNumberOfCallsInHalfOpenState: 3
+      care-coordination-agent:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
+        permittedNumberOfCallsInHalfOpenState: 3
+
+# ── Actuator ───────────────────────────────────────────────────────────────────
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+
+# ── Logging ────────────────────────────────────────────────────────────────────
+logging:
+  level:
+    com.healthcare.navigator: INFO
