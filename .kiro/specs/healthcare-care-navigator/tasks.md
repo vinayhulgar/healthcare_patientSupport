@@ -133,8 +133,8 @@ All tasks are Java/Spring Boot unless otherwise noted. Each task references the 
     - **Property 9: Clinical agent sources reflect retrieval outcome**
     - **Validates: Requirements 4.3**
 
-- [ ] 9. Medication Agent
-  - [ ] 9.1 Implement `MedicationAgent` in `com.healthcare.navigator.agent.medication`
+- [x] 9. Medication Agent
+  - [x] 9.1 Implement `MedicationAgent` in `com.healthcare.navigator.agent.medication`
     - Implement `Agent` interface; `canHandle` returns `true` for `MEDICATION`
     - Use Spring AI `ChatClient` with `MedicationAgentTools` wired in; structured output type: `MedicationAgentOutput(List<String> medications, List<String> instructions, List<String> warnings, List<String> missingInformation, List<SourceCitation> sources)`
     - When any tool fails, populate the corresponding output fields with empty arrays and add the failed tool name to `missingInformation`

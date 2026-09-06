@@ -7,6 +7,8 @@ com/healthcare/navigator/config/VectorStoreConfig.class
 com/healthcare/navigator/rag/VectorStoreService.class
 com/healthcare/navigator/agent/AgentResult.class
 com/healthcare/navigator/api/dto/PatientQueryRequest.class
+com/healthcare/navigator/agent/medication/MedicationAgent$MedicationAgentOutput.class
+com/healthcare/navigator/agent/medication/MedicationAgent.class
 com/healthcare/navigator/agent/clinical/ClinicalInformationAgent$ClinicalAgentOutput.class
 com/healthcare/navigator/HealthcareNavigatorApplication.class
 com/healthcare/navigator/rag/DocumentChunker.class
