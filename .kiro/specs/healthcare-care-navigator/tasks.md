@@ -100,17 +100,17 @@ All tasks are Java/Spring Boot unless otherwise noted. Each task references the 
     - `SpringAiConfig`: expose `ChatClient` bean(s) and configure `VirtualThreadPerTaskExecutor` for agent parallelism
     - _Requirements: 3.1, 3.2 | Design: §2.1, §SpringAiConfig_
 
-- [-] 7. Tool beans
-  - [-] 7.1 Implement `ClinicalAgentTools` Spring `@Component` in `com.healthcare.navigator.agent.clinical`
+- [x] 7. Tool beans
+  - [x] 7.1 Implement `ClinicalAgentTools` Spring `@Component` in `com.healthcare.navigator.agent.clinical`
     - `@Tool searchClinicalDocuments(String query, String patientId, int k)` — delegates to `RagPipeline.retrieve()` for clinical/discharge documents
     - `@Tool getDischargeInstructions(String patientId)` — fetches discharge document metadata from `KnowledgeBaseLoader` catalog for the given patient
     - _Requirements: 4.1, 4.3 | Design: §2.5 Clinical Information Agent_
-  - [-] 7.2 Implement `MedicationAgentTools` Spring `@Component` in `com.healthcare.navigator.agent.medication`
+  - [x] 7.2 Implement `MedicationAgentTools` Spring `@Component` in `com.healthcare.navigator.agent.medication`
     - `@Tool searchMedicationInformation(String query, int k)` — RAG retrieval over medication documents
     - `@Tool getPatientMedications(String patientId)` — retrieves patient-specific medication list from knowledge base
     - `@Tool checkMedicationInteraction(List<String> medicationNames)` — looks up known interactions in the knowledge base
     - _Requirements: 5.1, 5.5, 5.6 | Design: §2.5 Medication Agent_
-  - [-] 7.3 Implement `CareCoordinationTools` Spring `@Component` in `com.healthcare.navigator.agent.coordination`
+  - [x] 7.3 Implement `CareCoordinationTools` Spring `@Component` in `com.healthcare.navigator.agent.coordination`
     - `@Tool getFollowUpPlan(String patientId)` — retrieves follow-up plan from knowledge base
     - `@Tool getAppointments(String patientId)` — retrieves scheduled appointments
     - `@Tool getCareTasks(String patientId)` — retrieves care tasks and reminders

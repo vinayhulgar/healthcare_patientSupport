@@ -1,5 +1,6 @@
 com/healthcare/navigator/api/dto/PatientSupportResponse.class
 com/healthcare/navigator/rag/RetrievalResult.class
+com/healthcare/navigator/agent/coordination/CareCoordinationTools.class
 com/healthcare/navigator/orchestrator/ExecutionPlan.class
 com/healthcare/navigator/config/VectorStoreConfig.class
 com/healthcare/navigator/rag/VectorStoreService.class
@@ -13,6 +14,7 @@ com/healthcare/navigator/domain/RequestClassification.class
 com/healthcare/navigator/agent/Agent.class
 com/healthcare/navigator/domain/AgentOutcome.class
 com/healthcare/navigator/rag/TextChunk.class
+com/healthcare/navigator/agent/medication/MedicationAgentTools.class
 com/healthcare/navigator/knowledge/KnowledgeBaseLoader.class
 com/healthcare/navigator/config/SpringAiConfig.class
 com/healthcare/navigator/agent/AgentContext.class
