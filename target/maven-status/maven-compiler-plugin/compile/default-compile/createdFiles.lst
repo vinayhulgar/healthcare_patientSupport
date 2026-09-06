@@ -2,10 +2,12 @@ com/healthcare/navigator/api/dto/PatientSupportResponse.class
 com/healthcare/navigator/rag/RetrievalResult.class
 com/healthcare/navigator/agent/coordination/CareCoordinationTools.class
 com/healthcare/navigator/orchestrator/ExecutionPlan.class
+com/healthcare/navigator/agent/clinical/ClinicalInformationAgent.class
 com/healthcare/navigator/config/VectorStoreConfig.class
 com/healthcare/navigator/rag/VectorStoreService.class
 com/healthcare/navigator/agent/AgentResult.class
 com/healthcare/navigator/api/dto/PatientQueryRequest.class
+com/healthcare/navigator/agent/clinical/ClinicalInformationAgent$ClinicalAgentOutput.class
 com/healthcare/navigator/HealthcareNavigatorApplication.class
 com/healthcare/navigator/rag/DocumentChunker.class
 com/healthcare/navigator/knowledge/KnowledgeDocument.class

@@ -3,6 +3,7 @@
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/agent/AgentContext.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/agent/AgentResult.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/agent/clinical/ClinicalAgentTools.java
+/Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/agent/clinical/ClinicalInformationAgent.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/agent/coordination/CareCoordinationTools.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/agent/medication/MedicationAgentTools.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/api/dto/PatientQueryRequest.java

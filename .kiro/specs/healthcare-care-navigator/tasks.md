@@ -116,8 +116,8 @@ All tasks are Java/Spring Boot unless otherwise noted. Each task references the 
     - `@Tool getCareTasks(String patientId)` — retrieves care tasks and reminders
     - _Requirements: 6.1, 6.2 | Design: §2.5 Care Coordination Agent_
 
-- [ ] 8. Clinical Information Agent
-  - [ ] 8.1 Implement `ClinicalInformationAgent` in `com.healthcare.navigator.agent.clinical`
+- [x] 8. Clinical Information Agent
+  - [x] 8.1 Implement `ClinicalInformationAgent` in `com.healthcare.navigator.agent.clinical`
     - Implement `Agent` interface; `canHandle` returns `true` for `CLINICAL_INFORMATION` and `GENERAL_HEALTHCARE`
     - Use Spring AI `ChatClient` with `ClinicalAgentTools` wired in; structured output type: `ClinicalAgentOutput(String findings, List<String> recommendations, List<SourceCitation> sources, double confidence)`
     - System prompt must place retrieved document content strictly in a designated data context field — never in the instruction field — to prevent prompt injection
