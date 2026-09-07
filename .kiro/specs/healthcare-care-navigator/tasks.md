@@ -158,8 +158,8 @@ All tasks are Java/Spring Boot unless otherwise noted. Each task references the 
     - **Property 13: No fabricated medication content and no prescription-change recommendations**
     - **Validates: Requirements 5.3, 5.7**
 
-- [ ] 10. Care Coordination Agent
-  - [ ] 10.1 Implement `CareCoordinationAgent` in `com.healthcare.navigator.agent.coordination`
+- [x] 10. Care Coordination Agent
+  - [x] 10.1 Implement `CareCoordinationAgent` in `com.healthcare.navigator.agent.coordination`
     - Implement `Agent` interface; `canHandle` returns `true` for `CARE_COORDINATION`
     - Use Spring AI `ChatClient` with `CareCoordinationTools` wired in; structured output type: `CareCoordinationOutput(List<FollowUpItem> followUps, List<CareTask> tasks, List<TimelineEntry> timeline, List<EscalationCondition> escalationConditions, List<SourceCitation> sources)`
     - Define `FollowUpItem`, `CareTask`, `TimelineEntry`, `EscalationCondition` record types in the coordination sub-package

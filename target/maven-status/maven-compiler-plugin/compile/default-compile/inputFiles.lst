@@ -4,7 +4,12 @@
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/agent/AgentResult.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/agent/clinical/ClinicalAgentTools.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/agent/clinical/ClinicalInformationAgent.java
+/Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/agent/coordination/CareCoordinationAgent.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/agent/coordination/CareCoordinationTools.java
+/Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/agent/coordination/CareTask.java
+/Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/agent/coordination/EscalationCondition.java
+/Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/agent/coordination/FollowUpItem.java
+/Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/agent/coordination/TimelineEntry.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/agent/medication/MedicationAgent.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/agent/medication/MedicationAgentTools.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/api/dto/PatientQueryRequest.java
