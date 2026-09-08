@@ -179,8 +179,8 @@ All tasks are Java/Spring Boot unless otherwise noted. Each task references the 
     - **Property 16: Escalation conditions use exact source language with citations**
     - **Validates: Requirements 6.5**
 
-- [ ] 11. Request Classifier
-  - [ ] 11.1 Implement `RequestClassifier` in `com.healthcare.navigator.orchestrator`
+- [x] 11. Request Classifier
+  - [x] 11.1 Implement `RequestClassifier` in `com.healthcare.navigator.orchestrator`
     - Use Spring AI `ChatClient` with structured output type `ClassificationResult(RequestClassification classification, double confidence, String reasoning)`
     - System prompt: classify into exactly the five defined categories; default to `GENERAL_HEALTHCARE` when uncertain and log a note indicating classification fallback
     - Capture raw classification + reasoning in execution log
@@ -192,8 +192,8 @@ All tasks are Java/Spring Boot unless otherwise noted. Each task references the 
     - **Property 5: Execution plan agent selection matches classification**
     - **Validates: Requirements 2.4**
 
-- [ ] 12. Orchestrator Agent
-  - [ ] 12.1 Implement `OrchestratorAgent` in `com.healthcare.navigator.orchestrator`
+- [x] 12. Orchestrator Agent
+  - [x] 12.1 Implement `OrchestratorAgent` in `com.healthcare.navigator.orchestrator`
     - Inject `RequestClassifier`, all registered `Agent` beans, `ResponseAggregator`, `SafetyValidator`, and the virtual-thread executor
     - Step 1 — Classify: call `RequestClassifier`; record classification and reasoning
     - Step 2 — Emergency short-circuit: if `EMERGENCY_OR_HIGH_RISK`, route directly to `SafetyValidator` first; return HTTP 503 (`ServiceUnavailableException`) if validator is unreachable
