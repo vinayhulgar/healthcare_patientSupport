@@ -211,8 +211,8 @@ All tasks are Java/Spring Boot unless otherwise noted. Each task references the 
     - **Property 7: Partial agent failure produces named warnings**
     - **Validates: Requirements 3.3**
 
-- [ ] 13. Response Aggregator
-  - [ ] 13.1 Implement `ResponseAggregator` in `com.healthcare.navigator.orchestrator`
+- [x] 13. Response Aggregator
+  - [x] 13.1 Implement `ResponseAggregator` in `com.healthcare.navigator.orchestrator`
     - `aggregate(List<AgentResult>)` → `AggregatedResponse`
     - Concatenate `findings`/`recommendations` from `SUCCESS` agents into a single `answer` string
     - Merge all `sources` lists, deduplicating by `documentName`
@@ -225,18 +225,18 @@ All tasks are Java/Spring Boot unless otherwise noted. Each task references the 
     - **Property 7: Partial agent failure produces named warnings** (all-failure edge case)
     - **Validates: Requirements 3.3, 3.4**
 
-- [ ] 14. Safety / Grounding Validator
-  - [ ] 14.1 Implement `GroundingChecker` in `com.healthcare.navigator.safety`
+- [x] 14. Safety / Grounding Validator
+  - [x] 14.1 Implement `GroundingChecker` in `com.healthcare.navigator.safety`
     - Check 1 (diagnosis/prognosis detection): use regex patterns + LLM classifier to identify forbidden clinical judgment language; remove offending sentences and add a `warnings` entry describing the violation and the removed content
     - Check 3 (source citation verification): verify every source document name in the aggregated response against the `KnowledgeBaseLoader` in-memory catalog; remove non-existent citations and add a `warnings` entry
     - _Requirements: 9.1, 9.3, 9.4 | Design: §2.7_
-  - [ ] 14.2 Implement `HallucinationDetector` in `com.healthcare.navigator.safety`
+  - [x] 14.2 Implement `HallucinationDetector` in `com.healthcare.navigator.safety`
     - Check 2 (medication grounding): cross-reference every medication name and dosage in the answer against `sources` returned by the Medication Agent; remove ungrounded items and add a `warnings` entry
     - _Requirements: 9.2, 9.4 | Design: §2.7_
-  - [ ] 14.3 Implement `EmergencyEscalationHandler` in `com.healthcare.navigator.safety`
+  - [x] 14.3 Implement `EmergencyEscalationHandler` in `com.healthcare.navigator.safety`
     - Check 5 (emergency escalation): if classification is `EMERGENCY_OR_HIGH_RISK` or response content matches emergency keywords, prepend the mandatory emergency directive to `answer`; mark the directive immutable so no subsequent step can remove it
     - _Requirements: 2.3, 9.6 | Design: §2.7_
-  - [ ] 14.4 Implement `SafetyValidator` in `com.healthcare.navigator.safety`
+  - [x] 14.4 Implement `SafetyValidator` in `com.healthcare.navigator.safety`
     - Orchestrate the six ordered checks: (1) `GroundingChecker.checkDiagnosis`, (2) `HallucinationDetector.checkMedicationGrounding`, (3) `GroundingChecker.verifySourceCitations`, (4) conflict detection (compare agent `findings` for contradictions on the same entity — retain both perspectives, add conflict warning), (5) `EmergencyEscalationHandler.escalateIfNeeded`, (6) disclaimer injection (append mandatory disclaimer to `answer`)
     - `validate(AggregatedResponse, List<AgentResult>)` → `PatientSupportResponse`
     - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 9.6, 9.7 | Design: §2.7_

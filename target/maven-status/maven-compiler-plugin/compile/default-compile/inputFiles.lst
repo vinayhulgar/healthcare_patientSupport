@@ -33,4 +33,7 @@
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/rag/RetrievalResult.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/rag/TextChunk.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/rag/VectorStoreService.java
+/Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/safety/EmergencyEscalationHandler.java
+/Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/safety/GroundingChecker.java
+/Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/safety/HallucinationDetector.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/safety/SafetyValidator.java

@@ -8,11 +8,13 @@ com/healthcare/navigator/HealthcareNavigatorApplication.class
 com/healthcare/navigator/safety/SafetyValidator.class
 com/healthcare/navigator/rag/DocumentChunker.class
 com/healthcare/navigator/agent/coordination/FollowUpItem.class
+com/healthcare/navigator/safety/SafetyValidator$AgentDosageInfo.class
 com/healthcare/navigator/knowledge/KnowledgeDocument.class
 com/healthcare/navigator/rag/RagPipeline.class
 com/healthcare/navigator/domain/RequestClassification.class
 com/healthcare/navigator/orchestrator/AggregatedResponse.class
 com/healthcare/navigator/domain/AgentOutcome.class
+com/healthcare/navigator/safety/HallucinationDetector.class
 com/healthcare/navigator/agent/medication/MedicationAgentTools.class
 com/healthcare/navigator/knowledge/KnowledgeBaseLoader.class
 com/healthcare/navigator/config/SpringAiConfig.class
@@ -31,9 +33,11 @@ com/healthcare/navigator/agent/coordination/TimelineEntry.class
 com/healthcare/navigator/orchestrator/OrchestratorAgent.class
 com/healthcare/navigator/agent/coordination/CareTask.class
 com/healthcare/navigator/agent/coordination/CareCoordinationAgent$CareCoordinationOutput.class
+com/healthcare/navigator/safety/EmergencyEscalationHandler.class
 com/healthcare/navigator/agent/coordination/EscalationCondition.class
 com/healthcare/navigator/agent/Agent.class
 com/healthcare/navigator/rag/TextChunk.class
 com/healthcare/navigator/api/exception/ServiceUnavailableException.class
 com/healthcare/navigator/agent/AgentContext.class
+com/healthcare/navigator/safety/GroundingChecker.class
 com/healthcare/navigator/rag/EmbeddingService.class
