@@ -26,6 +26,9 @@
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/domain/SourceCitation.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/knowledge/KnowledgeBaseLoader.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/knowledge/KnowledgeDocument.java
+/Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/observability/CorrelationIdFilter.java
+/Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/observability/MdcPropagator.java
+/Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/observability/MetricsService.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/orchestrator/AggregatedResponse.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/orchestrator/ExecutionPlan.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/orchestrator/OrchestratorAgent.java

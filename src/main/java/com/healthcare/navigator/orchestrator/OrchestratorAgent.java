@@ -7,6 +7,7 @@ import com.healthcare.navigator.api.dto.PatientSupportResponse;
 import com.healthcare.navigator.api.exception.ServiceUnavailableException;
 import com.healthcare.navigator.domain.AgentOutcome;
 import com.healthcare.navigator.domain.RequestClassification;
+import com.healthcare.navigator.observability.MdcPropagator;
 import com.healthcare.navigator.safety.SafetyValidator;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
@@ -17,10 +18,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HexFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -109,6 +114,10 @@ public class OrchestratorAgent {
                 correlationId, classification, classificationResult.confidence(),
                 classificationResult.reasoning());
 
+        // ── Structured log: request received (Req. 11.1) ─────────────────────
+        // NEVER log raw patientId — only the SHA-256 hash (Req. 11.5, 12.5)
+        logRequestReceived(correlationId, patientId, classification);
+
         // ── Step 2: Emergency short-circuit ──────────────────────────────────
         if (classification == RequestClassification.EMERGENCY_OR_HIGH_RISK) {
             log.warn("OrchestratorAgent: EMERGENCY_OR_HIGH_RISK detected for correlationId={}", correlationId);
@@ -178,10 +187,14 @@ public class OrchestratorAgent {
                 continue;
             }
 
-            // Step 4 — submit to virtual thread executor
-            startTimes.put(agentName, System.currentTimeMillis());
+            // Step 4 — emit agent start log (Req. 11.2), then submit to virtual thread executor
+            long agentStartTime = System.currentTimeMillis();
+            startTimes.put(agentName, agentStartTime);
+            logAgentStart(correlationId, agentName, agentStartTime);
+
+            // Wrap with MdcPropagator so child virtual threads inherit correlationId (Req. 11.2)
             CompletableFuture<AgentResult> future = CompletableFuture.supplyAsync(
-                    () -> agent.execute(context), virtualThreadExecutor);
+                    MdcPropagator.wrap(() -> agent.execute(context)), virtualThreadExecutor);
             futures.put(agentName, future);
         }
 
@@ -216,19 +229,26 @@ public class OrchestratorAgent {
                     future.cancel(true);
                     log.warn("OrchestratorAgent: agent={} timed out after {}ms correlationId={}",
                             agentName, durationMs, correlationId);
-                    agentResults.add(AgentResult.timeout(agentName));
+                    AgentResult timeoutResult = AgentResult.timeout(agentName);
+                    logAgentComplete(correlationId, agentName, durationMs, timeoutResult.outcome());
+                    agentResults.add(timeoutResult);
                 } else if (future.isCompletedExceptionally()) {
                     log.warn("OrchestratorAgent: agent={} completed exceptionally after {}ms correlationId={}",
                             agentName, durationMs, correlationId);
-                    agentResults.add(AgentResult.failure(agentName, "Agent completed exceptionally"));
+                    AgentResult failResult = AgentResult.failure(agentName, "Agent completed exceptionally");
+                    logAgentComplete(correlationId, agentName, durationMs, failResult.outcome());
+                    agentResults.add(failResult);
                 } else {
                     try {
                         AgentResult result = future.getNow(AgentResult.timeout(agentName));
+                        logAgentComplete(correlationId, agentName, durationMs, result.outcome());
                         agentResults.add(result);
                     } catch (Exception e) {
                         log.warn("OrchestratorAgent: failed to retrieve result for agent={} correlationId={}: {}",
                                 agentName, correlationId, e.getMessage());
-                        agentResults.add(AgentResult.failure(agentName, "Failed to retrieve agent result: " + e.getMessage()));
+                        AgentResult failResult = AgentResult.failure(agentName, "Failed to retrieve agent result: " + e.getMessage());
+                        logAgentComplete(correlationId, agentName, durationMs, failResult.outcome());
+                        agentResults.add(failResult);
                     }
                 }
             }
@@ -300,5 +320,60 @@ public class OrchestratorAgent {
                 classification,
                 selectedAgentNames,
                 agentEntries);
+    }
+
+    // ── structured observability log helpers (Req. 11.1 – 11.4) ─────────────
+
+    /**
+     * Emits the "request received" structured log event.
+     * <ul>
+     *   <li>correlationId — from MDC</li>
+     *   <li>timestamp     — current UTC instant</li>
+     *   <li>patientIdHash — SHA-256 hex of patientId (NEVER the raw value)</li>
+     *   <li>classification — the determined classification</li>
+     * </ul>
+     * Requirements: 11.1, 11.5
+     */
+    private void logRequestReceived(String correlationId, String patientId, RequestClassification classification) {
+        String patientIdHash = sha256Hex(patientId);
+        log.info("event=REQUEST_RECEIVED correlationId={} timestamp={} patientIdHash={} classification={}",
+                correlationId, Instant.now(), patientIdHash, classification);
+    }
+
+    /**
+     * Emits the "agent start" structured log event.
+     * Requirements: 11.2
+     */
+    private void logAgentStart(String correlationId, String agentName, long startTimeEpochMs) {
+        log.info("event=AGENT_START correlationId={} agentName={} startTime={}",
+                correlationId, agentName, Instant.ofEpochMilli(startTimeEpochMs));
+    }
+
+    /**
+     * Emits the "agent complete" structured log event.
+     * Requirements: 11.2
+     */
+    private void logAgentComplete(String correlationId, String agentName, long durationMs, AgentOutcome outcome) {
+        log.info("event=AGENT_COMPLETE correlationId={} agentName={} durationMs={} outcome={}",
+                correlationId, agentName, durationMs, outcome);
+    }
+
+    /**
+     * Computes the SHA-256 hex digest of the input string.
+     * Returns {@code "UNKNOWN"} on any failure so that logging never throws.
+     * The hash is one-way — the original patientId cannot be recovered from the log.
+     */
+    private static String sha256Hex(String input) {
+        if (input == null || input.isBlank()) {
+            return "EMPTY";
+        }
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+            return HexFormat.of().formatHex(hashBytes);
+        } catch (NoSuchAlgorithmException e) {
+            // SHA-256 is always available on any standard JRE; this branch is defensive only
+            return "HASH_ERROR";
+        }
     }
 }

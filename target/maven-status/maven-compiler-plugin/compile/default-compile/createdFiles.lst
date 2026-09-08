@@ -33,14 +33,17 @@ com/healthcare/navigator/rag/VectorStoreService.class
 com/healthcare/navigator/agent/AgentResult.class
 com/healthcare/navigator/agent/medication/MedicationAgent.class
 com/healthcare/navigator/orchestrator/ResponseAggregator.class
+com/healthcare/navigator/observability/CorrelationIdFilter.class
 com/healthcare/navigator/agent/clinical/ClinicalInformationAgent$ClinicalAgentOutput.class
 com/healthcare/navigator/agent/coordination/TimelineEntry.class
+com/healthcare/navigator/observability/MdcPropagator.class
 com/healthcare/navigator/orchestrator/OrchestratorAgent.class
 com/healthcare/navigator/agent/coordination/CareTask.class
 com/healthcare/navigator/agent/coordination/CareCoordinationAgent$CareCoordinationOutput.class
 com/healthcare/navigator/safety/EmergencyEscalationHandler.class
 com/healthcare/navigator/agent/coordination/EscalationCondition.class
 com/healthcare/navigator/agent/Agent.class
+com/healthcare/navigator/observability/MetricsService.class
 com/healthcare/navigator/rag/TextChunk.class
 com/healthcare/navigator/api/exception/ServiceUnavailableException.class
 com/healthcare/navigator/agent/AgentContext.class

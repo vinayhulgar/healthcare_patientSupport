@@ -4,6 +4,7 @@ import com.healthcare.navigator.knowledge.KnowledgeBaseLoader;
 import com.healthcare.navigator.knowledge.KnowledgeDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Orchestrates the full Retrieval-Augmented Generation (RAG) pipeline:
@@ -127,6 +129,14 @@ public class RagPipeline {
     /**
      * Retrieves the most relevant document chunks for the given query text.
      *
+     * <p>Emits a structured log entry after retrieval:
+     * <ul>
+     *   <li>On results: {@code correlationId}, {@code queryId}, {@code k},
+     *       {@code chunksRetrieved}, {@code similarityScores[]}</li>
+     *   <li>On empty result: {@code correlationId}, {@code queryId},
+     *       {@code chunksRetrieved: 0} — no similarity scores logged (Req. 7.6)</li>
+     * </ul>
+     *
      * @param queryText the natural-language query from the patient or agent
      * @param k         maximum number of results to return
      * @param threshold minimum similarity score (0.0 – 1.0)
@@ -135,7 +145,9 @@ public class RagPipeline {
      */
     public List<RetrievalResult> retrieve(String queryText, int k, double threshold, String queryId) {
         float[] queryEmbedding = embeddingService.embed(queryText);
-        return vectorStoreService.findTopK(queryText, queryEmbedding, k, threshold, queryId);
+        List<RetrievalResult> results = vectorStoreService.findTopK(queryText, queryEmbedding, k, threshold, queryId);
+        logRetrievalResult(queryId, k, results);
+        return results;
     }
 
     /**
@@ -147,6 +159,32 @@ public class RagPipeline {
      */
     public List<RetrievalResult> retrieve(String queryText, String queryId) {
         return retrieve(queryText, defaultTopK, defaultThreshold, queryId);
+    }
+
+    // ── structured log helpers ────────────────────────────────────────────────
+
+    /**
+     * Emits the structured RAG retrieval log event (Requirements 11.4, 7.5, 7.6).
+     *
+     * <ul>
+     *   <li>Results present → include {@code similarityScores} array</li>
+     *   <li>Zero results → omit similarity scores entirely</li>
+     * </ul>
+     */
+    private void logRetrievalResult(String queryId, int k, List<RetrievalResult> results) {
+        String correlationId = MDC.get("correlationId");
+        int chunksRetrieved = results.size();
+
+        if (chunksRetrieved == 0) {
+            log.info("RAG retrieval: correlationId={} queryId={} chunksRetrieved=0",
+                    correlationId, queryId);
+        } else {
+            List<Double> scores = results.stream()
+                    .map(RetrievalResult::similarityScore)
+                    .collect(Collectors.toList());
+            log.info("RAG retrieval: correlationId={} queryId={} k={} chunksRetrieved={} similarityScores={}",
+                    correlationId, queryId, k, chunksRetrieved, scores);
+        }
     }
 
     // ── helpers ──────────────────────────────────────────────────────────────

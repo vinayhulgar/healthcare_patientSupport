@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  logback-spring.xml
+  ─────────────────────────────────────────────────────────────────────────────
+  Structured JSON logging for the Healthcare Care Navigator.
+
+  All log lines are emitted as JSON using the Logstash encoder.  MDC fields
+  (including 'correlationId') are automatically promoted to top-level JSON keys
+  by the encoder.
+
+  PHI / PII protection:
+    - Raw patient question text must NEVER be passed to log methods — callers
+      are responsible for this at the call site.
+    - Raw patientId must NEVER be logged — only its SHA-256 hash (patientIdHash).
+    - JWT values must NEVER be logged — confirmed by SecurityConfig and callers.
+    - Raw health record content must NEVER be logged — callers use query IDs only.
+    - The encoder configuration below does NOT suppress anything that callers
+      correctly omit; the protection lives in the application code.
+
+  Requirements: 11.5, 12.5 | Design: §2.10
+  ─────────────────────────────────────────────────────────────────────────────
+-->
+<configuration>
+
+    <!-- ── Import Spring Boot defaults (color console support, etc.) ─────── -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         Console appender — JSON via LogstashEncoder
+         All MDC fields are automatically included as top-level JSON keys.
+         The encoder captures: timestamp, level, logger, thread, message,
+         stack_trace, and every MDC entry (e.g. correlationId).
+         ───────────────────────────────────────────────────────────────────── -->
+    <appender name="CONSOLE_JSON" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <!--
+              Promote MDC keys to top-level JSON fields so operators can filter
+              logs by correlationId, patientIdHash, etc. directly.
+            -->
+            <includeMdcKeyName>correlationId</includeMdcKeyName>
+            <includeMdcKeyName>patientIdHash</includeMdcKeyName>
+            <includeMdcKeyName>requestClassification</includeMdcKeyName>
+
+            <!-- Custom field names for standard logback attributes -->
+            <timeZone>UTC</timeZone>
+
+            <!-- Exclude fields that could inadvertently carry PHI if mis-used -->
+            <!-- Note: actual PHI exclusion is enforced at the call site -->
+        </encoder>
+    </appender>
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         File appender — rolling JSON log (optional; useful in production)
+         ───────────────────────────────────────────────────────────────────── -->
+    <springProfile name="prod,staging">
+        <appender name="FILE_JSON" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>logs/healthcare-navigator.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- Roll over daily; keep 30 days of history -->
+                <fileNamePattern>logs/healthcare-navigator.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <maxHistory>30</maxHistory>
+                <totalSizeCap>5GB</totalSizeCap>
+            </rollingPolicy>
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+                <includeMdcKeyName>correlationId</includeMdcKeyName>
+                <includeMdcKeyName>patientIdHash</includeMdcKeyName>
+                <includeMdcKeyName>requestClassification</includeMdcKeyName>
+                <timeZone>UTC</timeZone>
+            </encoder>
+        </appender>
+    </springProfile>
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         Root logger
+         ───────────────────────────────────────────────────────────────────── -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE_JSON"/>
+        <springProfile name="prod,staging">
+            <appender-ref ref="FILE_JSON"/>
+        </springProfile>
+    </root>
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         Package-level overrides
+         ───────────────────────────────────────────────────────────────────── -->
+
+    <!-- Healthcare navigator — DEBUG in dev/test, INFO in prod -->
+    <springProfile name="dev,test">
+        <logger name="com.healthcare.navigator" level="DEBUG"/>
+    </springProfile>
+    <springProfile name="prod,staging">
+        <logger name="com.healthcare.navigator" level="INFO"/>
+    </springProfile>
+
+    <!-- Suppress noisy framework loggers at INFO by default -->
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.hibernate" level="WARN"/>
+    <logger name="org.springframework.ai" level="INFO"/>
+
+</configuration>
