@@ -18,6 +18,7 @@
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/api/exception/GlobalExceptionHandler.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/api/exception/ServiceUnavailableException.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/api/exception/ValidationErrorResponse.java
+/Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/config/SecurityConfig.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/config/SpringAiConfig.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/config/VectorStoreConfig.java
 /Users/vinaygopal/Documents/GitHub/healthcare_patientSupport/src/main/java/com/healthcare/navigator/domain/AgentOutcome.java

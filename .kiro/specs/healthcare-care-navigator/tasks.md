@@ -281,8 +281,8 @@ All tasks are Java/Spring Boot unless otherwise noted. Each task references the 
     - **Property 3: Correlation IDs are unique across requests**
     - **Validates: Requirements 1.6**
 
-- [ ] 17. Security configuration
-  - [ ] 17.1 Implement `SecurityConfig` in `com.healthcare.navigator.config`
+- [x] 17. Security configuration
+  - [x] 17.1 Implement `SecurityConfig` in `com.healthcare.navigator.config`
     - `@EnableWebSecurity @Configuration` class with `SecurityFilterChain` bean
     - Permit `/actuator/health` without authentication; require authentication for all other requests
     - Configure `oauth2ResourceServer` with JWT: validate `exp`, `iss`, `aud`, and signature via JWKS endpoint (`spring.security.oauth2.resourceserver.jwt.jwk-set-uri`)

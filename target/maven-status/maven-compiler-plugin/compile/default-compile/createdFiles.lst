@@ -1,4 +1,5 @@
 com/healthcare/navigator/api/exception/ValidationErrorResponse$FieldError.class
+com/healthcare/navigator/config/SecurityConfig.class
 com/healthcare/navigator/agent/coordination/CareCoordinationTools.class
 com/healthcare/navigator/agent/clinical/ClinicalInformationAgent.class
 com/healthcare/navigator/config/VectorStoreConfig.class
