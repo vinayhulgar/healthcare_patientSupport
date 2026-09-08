@@ -1,3 +1,4 @@
+com/healthcare/navigator/api/exception/ValidationErrorResponse$FieldError.class
 com/healthcare/navigator/agent/coordination/CareCoordinationTools.class
 com/healthcare/navigator/agent/clinical/ClinicalInformationAgent.class
 com/healthcare/navigator/config/VectorStoreConfig.class
@@ -5,6 +6,7 @@ com/healthcare/navigator/api/dto/PatientQueryRequest.class
 com/healthcare/navigator/agent/medication/MedicationAgent$MedicationAgentOutput.class
 com/healthcare/navigator/agent/coordination/CareCoordinationAgent.class
 com/healthcare/navigator/HealthcareNavigatorApplication.class
+com/healthcare/navigator/api/exception/GlobalExceptionHandler.class
 com/healthcare/navigator/safety/SafetyValidator.class
 com/healthcare/navigator/rag/DocumentChunker.class
 com/healthcare/navigator/agent/coordination/FollowUpItem.class
@@ -22,7 +24,9 @@ com/healthcare/navigator/orchestrator/RequestClassifier$ClassificationResult.cla
 com/healthcare/navigator/domain/SourceCitation.class
 com/healthcare/navigator/api/dto/PatientSupportResponse.class
 com/healthcare/navigator/rag/RetrievalResult.class
+com/healthcare/navigator/api/exception/ValidationErrorResponse.class
 com/healthcare/navigator/orchestrator/ExecutionPlan.class
+com/healthcare/navigator/api/PatientSupportController.class
 com/healthcare/navigator/orchestrator/RequestClassifier.class
 com/healthcare/navigator/rag/VectorStoreService.class
 com/healthcare/navigator/agent/AgentResult.class

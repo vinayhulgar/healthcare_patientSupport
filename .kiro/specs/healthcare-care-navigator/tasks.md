@@ -256,17 +256,17 @@ All tasks are Java/Spring Boot unless otherwise noted. Each task references the 
     - **Property 24: Prompt injection has no effect on agent output**
     - **Validates: Requirements 4.7, 5.8, 6.7, 10.2, 10.3, 10.4, 10.5**
 
-- [ ] 15. Checkpoint — Core agent pipeline complete
+- [x] 15. Checkpoint — Core agent pipeline complete
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 16. REST API layer
-  - [ ] 16.1 Implement `PatientSupportController` in `com.healthcare.navigator.api`
+- [x] 16. REST API layer
+  - [x] 16.1 Implement `PatientSupportController` in `com.healthcare.navigator.api`
     - Single `@PostMapping("/api/v1/patient-support/query")` endpoint
     - Accepts `@Valid @RequestBody PatientQueryRequest request`; Jakarta Bean Validation enforces constraints before any agent call
     - Delegates to `OrchestratorAgent`; returns `ResponseEntity<PatientSupportResponse>` with HTTP 200
     - `X-Correlation-ID` response header is set by `CorrelationIdFilter` (not in the controller)
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6 | Design: §2.2_
-  - [ ] 16.2 Implement `GlobalExceptionHandler` in `com.healthcare.navigator.api.exception` using `@RestControllerAdvice`
+  - [x] 16.2 Implement `GlobalExceptionHandler` in `com.healthcare.navigator.api.exception` using `@RestControllerAdvice`
     - Handle `MethodArgumentNotValidException` → HTTP 400 with field-level validation error message
     - Handle `ServiceUnavailableException` (Safety Validator unreachable on emergency query) → HTTP 503
     - Handle all other `Exception` → HTTP 500 with generic message; log full error with `correlationId`; no internal details in response body
